@@ -1,0 +1,36 @@
+{
+  "id": "/DetailedUserUsage",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "int"
+    },
+    "userId": {
+      "type": "int"
+    },
+    "usageTime": {
+      "type": "string"
+    },
+    "bytesDownloaded": {
+      "type": "int"
+    },
+    "bytesUploaded": {
+      "type": "int"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "userId",
+    "usageTime",
+    "bytesDownloaded",
+    "bytesUploaded",
+    "createdAt",
+    "updatedAt"
+  ]
+}

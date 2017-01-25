@@ -1,0 +1,15 @@
+{
+  "development": {
+    "use_env_variable": "MYUSAGE_DEV_DB",
+    "migrationStorage": "sequelize"
+  },
+  "test": {
+    "use_env_variable": "MYUSAGE_TEST_DB",
+    "migrationStorage": "sequelize",
+    "logging": false
+  },
+  "production": {
+    "use_env_variable": "MYUSAGE_DB",
+    "migrationStorage": "sequelize"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "/ApiUser",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "int"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "emailAddress": {
+      "type": "string"
+    },
+    "passwordHash": {
+      "type": "string"
+    },
+    "apiAccess": {
+      "type": "boolean"
+    },
+    "websiteAccess": {
+      "type": "boolean"
+    },
+    "apiKey": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "firstName",
+    "lastName",
+    "emailAddress",
+    "passwordHash",
+    "apiAccess",
+    "websiteAccess",
+    "createdAt",
+    "updatedAt"
+  ]
+}
