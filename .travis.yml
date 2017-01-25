@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "6"
+services:
+  - mysql
+env:
+  - MYUSAGE_TEST_DB=mysql://root:@127.0.0.1/myusage_test
+before_install:
+  - mysql -e 'CREATE DATABASE myusage_test;'
+before_script:
+  - npm run migrate-test-db
+notifications:
+  email: false

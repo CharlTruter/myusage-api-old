@@ -1,0 +1,32 @@
+{
+  "id": "/User",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "int"
+    },
+    "username": {
+      "type": "string"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "apiUserId": {
+      "type": "int"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "username",
+    "displayName",
+    "apiUserId",
+    "createdAt",
+    "updatedAt"
+  ]
+}
