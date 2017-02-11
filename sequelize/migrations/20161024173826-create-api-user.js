@@ -21,16 +21,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      password_hash: {
+      password: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      api_access: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      website_access: {
+      enabled: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,

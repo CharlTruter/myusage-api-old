@@ -1,0 +1,15 @@
+{
+  "id": "/SuccessResponseMeta",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "integer"
+    },
+    "requestTime": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "code"
+  ]
+}

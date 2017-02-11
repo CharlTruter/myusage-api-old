@@ -1,0 +1,10 @@
+{
+  "id": "some_id",
+  "value": "some_value",
+  "name": "some_name",
+  "description": "some_description",
+  "enabled": false,
+  "createdDate": "Sun Feb 11 2017 18:44:09 GMT+0200 (South Africa Standard Time)",
+  "lastUpdatedDate": "Sun Feb 11 2017 18:44:09 GMT+0200 (South Africa Standard Time)",
+  "stageKeys": []
+}

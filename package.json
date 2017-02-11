@@ -4,10 +4,10 @@
   "description": "API project for the MyUsage system",
   "main": "main.js",
   "scripts": {
-    "unit-tests": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test/unit --recursive",
+    "unit-tests": "cross-env NODE_ENV=test ENCRYPTION_SALT=some_salt AWS_ACCESS_KEY_ID=some_keyid AWS_SECRET_ACCESS_KEY=some_accesskey AWS_REGION=some_region AWS_API_KEY_NAME_PREFIX=some_prefix AWS_USAGE_PLAN_ID=some_planid ./node_modules/.bin/mocha --reporter spec test/unit --recursive",
     "migrate-test-db": "node_modules/.bin/sequelize db:migrate --env test",
     "integration-tests": "npm run migrate-test-db && cross-env NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test/integration --recursive",
-    "test": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test --recursive"
+    "test": "cross-env NODE_ENV=test ENCRYPTION_SALT=some_salt AWS_ACCESS_KEY_ID=some_keyid AWS_SECRET_ACCESS_KEY=some_accesskey AWS_REGION=some_region AWS_API_KEY_NAME_PREFIX=some_prefix AWS_USAGE_PLAN_ID=some_planid ./node_modules/.bin/mocha --reporter spec test --recursive"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/CharlTruter/myusage-api#readme",
   "dependencies": {
     "async": "^2.1.4",
+    "aws-sdk": "^2.16.0",
     "crypto": "0.0.3",
     "date-format": "^1.0.0",
     "mysql": "^2.12.0",

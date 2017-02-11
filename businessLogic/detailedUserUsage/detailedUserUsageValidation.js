@@ -1,11 +1,12 @@
 'use strict';
 
-const validationHelper = require('../validation/validationHelper.js');
+const ValidationHelper = require('../validation/validationHelper.js');
 
 module.exports = function DetailedUserUsageValidation(sequelize) {
+  this.validationHelper = new ValidationHelper();
   this.validateCreateDetailedUserUsage = function validateCreateDetailedUserUsage(args, callback) {
     try {
-      if (!validationHelper.isNonNegativeInteger(args.apiUserId)) {
+      if (!this.validationHelper.isNonNegativeInteger(args.apiUserId)) {
         throw new Error('Api user id must be a non-negative integer');
       }
 
@@ -34,21 +35,21 @@ module.exports = function DetailedUserUsageValidation(sequelize) {
       methodUsageEntry = {};
     }
 
-    if (!validationHelper.isValidString(methodUsageEntry.username)) {
+    if (!this.validationHelper.isValidString(methodUsageEntry.username)) {
       throw new Error('Non-string username has been specified.');
-    } else if (validationHelper.isWhitespaceOrEmptyString(methodUsageEntry.username)) {
+    } else if (this.validationHelper.isWhitespaceOrEmptyString(methodUsageEntry.username)) {
       throw new Error('Blank username is specified.');
     }
 
-    if (!validationHelper.isNonNegativeInteger(methodUsageEntry.bytesDownloaded)) {
+    if (!this.validationHelper.isNonNegativeInteger(methodUsageEntry.bytesDownloaded)) {
       throw new Error('Bytes downloaded must be a non-negative integer');
     }
 
-    if (!validationHelper.isNonNegativeInteger(methodUsageEntry.bytesUploaded)) {
+    if (!this.validationHelper.isNonNegativeInteger(methodUsageEntry.bytesUploaded)) {
       throw new Error('Bytes uploaded must be a non-negative integer');
     }
 
-    if (!validationHelper.isValidDate(methodUsageEntry.usageTime)) {
+    if (!this.validationHelper.isValidDate(methodUsageEntry.usageTime)) {
       throw new Error('Usage time must be a valid date');
     }
   };

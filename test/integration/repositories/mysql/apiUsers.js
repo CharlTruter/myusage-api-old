@@ -15,9 +15,8 @@ function createApiUser(increment, callback) {
     first_name: `Charl ${increment}`,
     last_name: `Truter ${increment}`,
     email_address: `email_${increment}@address.com`,
-    password_hash: `SOMEPASSWORDHASH_${increment}`,
-    api_access: 1,
-    website_access: 0,
+    password: `SOMEPASSWORDHASH_${increment}`,
+    enabled: 1,
     api_key: `SOMEAPIKEY_${increment}`,
   }).then(function CreateMysqlApiUserCallback(apiUser) {
     return callback(null, apiUser);
@@ -179,6 +178,83 @@ describe('MysqlApiUsersRepository', function MysqlApiUsersRepository() {
       const apiUserRepo = new ApiUserRepo(sequelizeHelper.sequelize);
 
       apiUserRepo.getOneByEmailAddress('foobar', function getOneByEmailAddressCallback(getError, response) {
+        try {
+          assert.isUndefined(getError);
+          assert.isUndefined(response);
+          done();
+        } catch (innerError) {
+          done(innerError);
+        }
+      });
+    });
+  });
+
+  describe('GetOneByApiKey', function GetOneByApiKey() {
+    it('Returns the correct schema', function CorrectSchema(done) {
+      const ApiUserRepo = require(apiUserRepoPath);
+      const apiUserRepo = new ApiUserRepo(sequelizeHelper.sequelize);
+
+      createApiUser(1, function createApiUserCallback(error, apiUser) {
+        try {
+          assert.isNull(error);
+          assert.isDefined(apiUser);
+
+          apiUserRepo.getOneByApiKey(apiUser.api_key,
+            function getOneByApiKeyCallback(getError, response) {
+              try {
+                assert.isNull(getError);
+                const validator = new jsonSchema.Validator();
+                const apiUserSchema = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', '..', '..', 'models', 'mysql', 'schema', 'apiUser.json'), 'utf8'));
+
+                const validationResult = validator.validate(response, apiUserSchema);
+                assert.lengthOf(validationResult.errors, 0);
+                done();
+              } catch (innerError) {
+                done(innerError);
+              }
+            });
+        } catch (innerError) {
+          done(innerError);
+        }
+      });
+    });
+
+    it('Returns the correct data for the entry', function CorrectData(done) {
+      const ApiUserRepo = require(apiUserRepoPath);
+      const apiUserRepo = new ApiUserRepo(sequelizeHelper.sequelize);
+
+      createApiUser(1, function createApiUserCallback(error, apiUser) {
+        try {
+          assert.isNull(error);
+          assert.isDefined(apiUser);
+
+          apiUserRepo.getOneByApiKey(apiUser.api_key,
+            function getOneByApiKeyCallback(getError, response) {
+              try {
+                assert.isNull(getError);
+                assert.equal(response.firstName, apiUser.first_name);
+                assert.equal(response.lastName, apiUser.last_name);
+                assert.equal(response.emailAddress, apiUser.email_address);
+                assert.equal(response.passwordHash, apiUser.password_hash);
+                assert.equal(response.apiAccess, apiUser.api_access);
+                assert.equal(response.websiteAccess, apiUser.website_access);
+                assert.equal(response.apiKey, apiUser.api_key);
+                done();
+              } catch (innerError) {
+                done(innerError);
+              }
+            });
+        } catch (innerError) {
+          done(innerError);
+        }
+      });
+    });
+
+    it('Returns nothing if api key does not exist', function NonExistantApiKey(done) {
+      const ApiUserRepo = require(apiUserRepoPath);
+      const apiUserRepo = new ApiUserRepo(sequelizeHelper.sequelize);
+
+      apiUserRepo.getOneByApiKey('foobar', function getOneByApiKeyCallback(getError, response) {
         try {
           assert.isUndefined(getError);
           assert.isUndefined(response);
@@ -362,9 +438,8 @@ describe('MysqlApiUsersRepository', function MysqlApiUsersRepository() {
         firstName: 'Charl',
         lastName: 'Truter',
         emailAddress: 'foo@bar.com',
-        passwordHash: 'ASDF1234',
-        apiAccess: true,
-        websiteAccess: false,
+        password: 'ASDF1234',
+        enabled: true,
         apiKey: '987FDSA',
       };
 
@@ -391,9 +466,8 @@ describe('MysqlApiUsersRepository', function MysqlApiUsersRepository() {
         firstName: 'Charl',
         lastName: 'Truter',
         emailAddress: 'foo@bar.com',
-        passwordHash: 'ASDF1234',
-        apiAccess: true,
-        websiteAccess: false,
+        password: 'ASDF1234',
+        enabled: true,
         apiKey: '987FDSA',
       };
 
@@ -403,10 +477,9 @@ describe('MysqlApiUsersRepository', function MysqlApiUsersRepository() {
           assert.equal(response.firstName, createArgs.firstName);
           assert.equal(response.lastName, createArgs.lastName);
           assert.equal(response.emailAddress, createArgs.emailAddress);
-          assert.isDefined(response.passwordHash);
-          assert.equal(response.apiAccess, true);
-          assert.equal(response.websiteAccess, false);
-          assert.isDefined(response.apiKey);
+          assert.equal(response.password, createArgs.password);
+          assert.equal(response.enabled, createArgs.enabled);
+          assert.equal(response.apiKey, createArgs.apiKey);
           done();
         } catch (innerError) {
           done(innerError);
@@ -422,9 +495,8 @@ describe('MysqlApiUsersRepository', function MysqlApiUsersRepository() {
         firstName: 'John',
         lastName: 'Smith',
         emailAddress: 'foo@bar.com',
-        passwordHash: 'PASSWORDHASH',
-        apiAccess: 1,
-        websiteAccess: 1,
+        password: 'PASSWORDHASH',
+        enabled: 1,
         apiKey: 'APIKEY',
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -461,6 +533,135 @@ describe('MysqlApiUsersRepository', function MysqlApiUsersRepository() {
         });
       }).catch(function findAllErrorCallback(finderror) {
         return done(finderror);
+      });
+    });
+  });
+
+  describe('Update', function Update() {
+    it('Returns the correct schema', function CorrectSchema(done) {
+      const ApiUserRepo = require(apiUserRepoPath);
+      const apiUserRepo = new ApiUserRepo(sequelizeHelper.sequelize);
+
+      const updateArgs = {
+        firstName: 'Charl',
+        lastName: 'Truter',
+        emailAddress: 'foo@bar.com',
+        password: 'ASDF1234',
+        enabled: false,
+        apiKey: '987FDSA',
+      };
+
+      createApiUser(1, function createApiUserCallback(error, apiUser) {
+        try {
+          assert.isNull(error);
+          assert.isDefined(apiUser);
+
+          apiUserRepo.update(1, updateArgs, function updateCallback(updateError, response) {
+            try {
+              assert.isNull(updateError);
+              const validator = new jsonSchema.Validator();
+              const apiUserSchema = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', '..', '..', 'models', 'mysql', 'schema', 'apiUser.json'), 'utf8'));
+
+              const validationResult = validator.validate(response, apiUserSchema);
+              assert.lengthOf(validationResult.errors, 0);
+              done();
+            } catch (innerError) {
+              done(innerError);
+            }
+          });
+        } catch (createError) {
+          done(createError);
+        }
+      });
+    });
+
+    it('Returns the correct data for the entry', function CorrectData(done) {
+      const ApiUserRepo = require(apiUserRepoPath);
+      const apiUserRepo = new ApiUserRepo(sequelizeHelper.sequelize);
+
+      const updateArgs = {
+        firstName: 'Charl',
+        lastName: 'Truter',
+        emailAddress: 'foo@bar.com',
+        password: 'ASDF1234',
+        enabled: false,
+        apiKey: '987FDSA',
+      };
+
+      createApiUser(1, function createApiUserCallback(error, apiUser) {
+        try {
+          assert.isNull(error);
+          assert.isDefined(apiUser);
+
+          apiUserRepo.update(1, updateArgs, function updateCallback(updateError, response) {
+            try {
+              assert.isNull(updateError);
+              assert.equal(response.firstName, updateArgs.firstName);
+              assert.equal(response.lastName, updateArgs.lastName);
+              assert.equal(response.emailAddress, updateArgs.emailAddress);
+              assert.equal(response.password, updateArgs.password);
+              assert.equal(response.enabled, updateArgs.enabled);
+              assert.equal(response.apiKey, updateArgs.apiKey);
+              done();
+            } catch (innerError) {
+              done(innerError);
+            }
+          });
+        } catch (createError) {
+          done(createError);
+        }
+      });
+    });
+
+    it('Updates the data in the database', function UpdatesDatabase(done) {
+      const ApiUserRepo = require(apiUserRepoPath);
+      const apiUserRepo = new ApiUserRepo(sequelizeHelper.sequelize);
+
+      const updateArgs = {
+        firstName: 'John',
+        lastName: 'Smith',
+        emailAddress: 'foo@bar.com',
+        password: 'PASSWORDHASH',
+        enabled: false,
+        apiKey: 'APIKEY',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      createApiUser(1, function createApiUserCallback(error, apiUser) {
+        try {
+          assert.isNull(error);
+          assert.isDefined(apiUser);
+
+          apiUserRepo.update(1, updateArgs, function updateCallback(updateError, response) {
+            try {
+              assert.isNull(updateError);
+              assert.isDefined(response);
+              return sequelizeHelper.sequelize.ApiUser.findAll({
+                limit: 1,
+                where: {
+                  email_address: updateArgs.emailAddress,
+                },
+              }).then(function findAllInnerCallback(afterUpdateUser) {
+                assert.lengthOf(afterUpdateUser, 1);
+                const dbApiUser = afterUpdateUser[0].get();
+                assert.equal(dbApiUser.first_name, updateArgs.firstName);
+                assert.equal(dbApiUser.last_name, updateArgs.lastName);
+                assert.equal(dbApiUser.email_address, updateArgs.emailAddress);
+                assert.equal(dbApiUser.password, updateArgs.password);
+                assert.equal(dbApiUser.enabled, updateArgs.enabled);
+                assert.equal(dbApiUser.api_key, updateArgs.apiKey);
+                return done();
+              }).catch(function findAllErrorCallback(finderror) {
+                return done(finderror);
+              });
+            } catch (innerError) {
+              return done(innerError);
+            }
+          });
+        } catch (createError) {
+          done(createError);
+        }
       });
     });
   });
