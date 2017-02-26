@@ -15,9 +15,8 @@ const getApiUser = function getApiUser() {
     first_name: 'John',
     last_name: 'Smith',
     email_address: 'foo@bar.com',
-    password_hash: 'PASSWORDHASH',
-    api_access: 1,
-    website_access: 1,
+    password: 'PASSWORDHASH',
+    enabled: 1,
     api_key: 'APIKEY',
     created_at: new Date(),
     updated_at: new Date(),
@@ -59,7 +58,7 @@ describe('MysqlApiUserFactory', function MysqlApiUserFactoryTest() {
       assert.lengthOf(validationResult.errors, 0);
     });
 
-    it('Returns the correct data if a row is specified', function ReturnsCorrectSchema() {
+    it('Returns the correct data if a row is specified', function ReturnsCorrectData() {
       const apiUserFactory = require(apiUserFactoryPath);
       const dateFormat = require('date-format');
 
@@ -71,9 +70,8 @@ describe('MysqlApiUserFactory', function MysqlApiUserFactoryTest() {
       assert.equal(parseResult.firstName, apiUser.first_name);
       assert.equal(parseResult.lastName, apiUser.last_name);
       assert.equal(parseResult.emailAddress, apiUser.email_address);
-      assert.equal(parseResult.passwordHash, apiUser.password_hash);
-      assert.equal(parseResult.apiAccess, apiUser.api_access);
-      assert.equal(parseResult.websiteAccess, apiUser.website_access);
+      assert.equal(parseResult.password, apiUser.password);
+      assert.equal(parseResult.enabled, apiUser.enabled);
       assert.equal(parseResult.apiKey, apiUser.api_key);
       assert.equal(parseResult.createdAt, dateFormat('yyyy-MM-dd hh:mm:ss:SSS', apiUser.created_at));
       assert.equal(parseResult.updatedAt, dateFormat('yyyy-MM-dd hh:mm:ss:SSS', apiUser.updated_at));

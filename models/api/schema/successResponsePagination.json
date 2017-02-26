@@ -1,0 +1,24 @@
+{
+  "id": "/SuccessResponsePagination",
+  "type": "object",
+  "properties": {
+    "count": {
+      "type": "integer"
+    },
+    "page": {
+      "type": "integer"
+    },
+    "totalResponses": {
+      "type": "integer"
+    },
+    "totalPages": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "count",
+    "page",
+    "totalResponses",
+    "totalPages"
+  ]
+}

@@ -14,16 +14,11 @@ module.exports = function ApiUserModel(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    password_hash: {
+    password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    api_access: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: true,
-    },
-    website_access: {
+    enabled: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,

@@ -1,27 +1,21 @@
 {
-  "id": "/ApiUser",
+  "id": "/ApiKey",
   "type": "object",
   "properties": {
     "id": {
-      "type": "int"
-    },
-    "firstName": {
       "type": "string"
     },
-    "lastName": {
+    "value": {
       "type": "string"
     },
-    "emailAddress": {
+    "name": {
       "type": "string"
     },
-    "password": {
+    "description": {
       "type": "string"
     },
     "enabled": {
       "type": "boolean"
-    },
-    "apiKey": {
-      "type": "string"
     },
     "createdAt": {
       "type": "string"
@@ -32,10 +26,9 @@
   },
   "required": [
     "id",
-    "firstName",
-    "lastName",
-    "emailAddress",
-    "password",
+    "value",
+    "name",
+    "description",
     "enabled",
     "createdAt",
     "updatedAt"

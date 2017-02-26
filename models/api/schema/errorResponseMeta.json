@@ -1,0 +1,26 @@
+{
+  "id": "/ErrorResponseMeta",
+  "type": "object",
+  "properties": {
+    "errorType": {
+      "type": "string"
+    },
+    "errorMessage": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "errorCode": {
+      "type": "integer"
+    },
+    "requestTime": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "errorType",
+    "errorMessage",
+    "errorCode"
+  ]
+}

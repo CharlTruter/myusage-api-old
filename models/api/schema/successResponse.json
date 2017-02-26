@@ -1,0 +1,27 @@
+{
+  "id": "/SuccessResponse",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "type": [
+        {
+          "$ref": "/SuccessResponseMeta"
+        },
+        "object"
+      ]
+    },
+    "data": {
+      "type": "object"
+    },
+    "pagination": {
+      "type": [
+        {
+          "$ref": "/SuccessResponsePagination"
+        }
+      ]
+    }
+  },
+  "required": [
+    "meta"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "/ErrorResponse",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "$ref": "/ErrorResponseMeta"
+    }
+  },
+  "required": [
+    "meta"
+  ]
+}
